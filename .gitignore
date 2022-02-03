@@ -1,0 +1,9 @@
+# Client
+dist/
+# Server
+config.env
+# Server + Client
+node_modules/
+
+#Mac
+.DS_Store

@@ -1,0 +1,124 @@
+/* GENERAL */
+
+/* --- 01 TYPOGRAPHY SYSTEM
+
+- Font size system (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98 */
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html {
+	/* Percentage of user's browser font-size setting */
+	font-size: 62.5%;
+}
+
+body {
+	font-family: 'sans-serif';
+	line-height: 1;
+	font-weight: 400;
+	color: #555;
+}
+
+body {
+	height: 400px;
+	width: 400px;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+/* CONTAINER */
+.container {
+	max-width: 120rem;
+	padding: 0 2rem;
+	margin: 0 auto;
+}
+
+/* HEADERS */
+.heading-primary,
+.heading-secondary {
+	font-weight: 700;
+	color: #555;
+	letter-spacing: 0.5px;
+}
+
+.heading-primary {
+	font-size: 2rem;
+	line-height: 1.05;
+}
+.heading-secondary {
+	font-size: 1.8rem;
+}
+/* GRIDS */
+.grid {
+	display: grid;
+	column-gap: 6.4rem;
+	row-gap: 9.6rem;
+}
+
+.grid--3-cols {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+/* BUTTONS */
+.btn,
+.btn:link,
+.btn:visited {
+	display: inline-block;
+	font-size: 1.6rem;
+	text-decoration: none;
+	background-color: #555;
+	color: #fff;
+	font-weight: 600;
+	padding: 0.5rem 1rem;
+	border-radius: 999px;
+
+	/* for buttons only */
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+/* HELPER CLASSES / SETTINGS CLASSES */
+
+.margin-right-sm {
+	margin-right: 1.6rem !important;
+}
+
+.margin-bottom-md {
+	margin-bottom: 4.8rem !important;
+}
+
+.center-text {
+	text-align: center;
+}
+
+/* --------- STYLES --------------- */
+
+/* POPUP HEADER */
+.header {
+	margin: 1rem 1rem 2rem 1rem;
+	text-align: center;
+}
+
+/* NEW COLLECTION FORM */
+.new-collection-container {
+	margin-bottom: 2rem;
+}
+
+/* COLLECTIONS */
+.collections-header {
+	margin-bottom: 1rem;
+}
+
+/* COLLECTION CARDS */
+.card-container {
+	font-size: 1.2rem;
+	margin: 0.5rem;
+}

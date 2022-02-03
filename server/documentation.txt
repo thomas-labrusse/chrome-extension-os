@@ -1,0 +1,262 @@
+// Retrieve metadata from ethereum contract
+/*
+library : web3 ()
+documentation : https://web3js.readthedocs.io/en/v1.7.0/getting-started.html
+*/
+
+/*
+Setup:
+npm install web3
+yarn add web3
+check for provider :  const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+if returns null --> connect to a remote/local node
+*/
+
+// Creating a new "contract" ?
+new web3.eth.Contract(jsonInterface, address, options);
+// ex:
+const contract = new web3.eth.Contract(ERC721ABI, nftAddress);
+// with nft address = contract address
+// with ERC721ABI :
+
+// Calling a "constant method"
+myContract.methods.myMethod(params).call(options);
+// Will call a “constant” method and execute its smart contract method in the EVM without sending any transaction. Note calling cannot alter the smart contract state.
+// ex to return tokenURI :
+tokenURI = await contract.methods.tokenURI(id).call();
+
+// const handleClick = async (nftAddress, tokenID) => {
+//     setIsLoading(true);
+//     try {
+//       const contract = new web3.eth.Contract(ERC721ABI, nftAddress);
+
+//       let owner = "";
+//       try {
+//         owner = await contract.methods.ownerOf(tokenID).call();
+//       } catch (e) {
+//         console.error(e);
+//       }
+
+//       window.history.pushState("", "", `?address=${nftAddress}&id=${tokenID}`);
+
+//       const symbol = await contract.methods.symbol().call();
+//       const name = await contract.methods.name().call();
+
+//       if (knownPoor.includes(nftAddress.toLowerCase())) {
+//         setNFTInfo({
+//           level: "poor",
+//           owner,
+//           tokenURI: "N/A",
+//           symbol,
+//           name,
+//           address: nftAddress,
+//           tokenID: tokenID,
+//           protocol: "N/A",
+//           uriURL: "N/A",
+//         });
+//         // setImageInfo(defaultImgState); // todo check
+//         setImageInfo(imageInfo);
+//         return;
+//       }
+
+//       if (nftAddress.toLowerCase() === HashmasksAddress.toLowerCase()) {
+//         // 0xC2C747E0F7004F9E8817Db2ca4997657a7746928 224
+//         let hmContract = new web3.eth.Contract(
+//           HashmaskDatastoreABI,
+//           HashmaskDatastoreAddress
+//         );
+//         let ipfsCIDInHex = await hmContract.methods
+//           .getIPFSHashHexAtIndex(tokenID)
+//           .call();
+//         const bytes = Buffer.from(ipfsCIDInHex.replace("0x", ""), "hex");
+//         const ipfsCID = bs58.encode(bytes);
+
+//         let arweaveImageID = await getArweaveIDByCID(ipfsCID);
+
+//         if (arweaveImageID === "") {
+//           try {
+//             await deployToIPFS(ipfsCID);
+//             console.log("deployed");
+//           } catch (e) {
+//             console.log(e);
+//           }
+//         }
+
+//         let [imageURIURL] = await getURLFromURI(arweaveImageID);
+//         setImageInfo({ ...imageInfo, loading: true });
+
+//         fetch(imageURIURL, { method: "GET" })
+//           .then(async (imageResponse) => {
+//             let imageBlob = await imageResponse.blob();
+//             let image = URL.createObjectURL(imageBlob);
+//             setImageInfo({
+//               imageURIURL: imageURIURL,
+//               image: image,
+//               loading: false,
+//             });
+//           })
+//           .catch((e) => {
+//             console.error(e);
+//             // setFetchError("Could not fetch NFT Image " + imgURI);
+//             setFetchError(createMainError(nftAddress));
+
+//             setIsLoading(false);
+//           });
+
+//         setNFTInfo({
+//           level: "strong",
+//           owner,
+//           tokenURI: arweaveEndpoint + "/" + arweaveImageID,
+//           symbol,
+//           name,
+//           address: nftAddress,
+//           tokenID: tokenID,
+//           protocol: "Arweave",
+//           uriURL: arweaveEndpoint + "/" + arweaveImageID,
+//         });
+//         setImageInfo(imageInfo);
+//         return;
+//       }
+
+//       let [tokenURI, err] = await tryToGetTokenURI(contract, tokenID);
+//       if (err !== "") {
+//         console.error(err);
+//         setFetchError(createMainError(nftAddress));
+//         // setFetchError("Could not fetch token URI for NFT " + tokenURI);
+//         setIsLoading(false);
+//         return;
+//       }
+
+//       let [uriURL, uriProtocol] = await getURLFromURI(tokenURI);
+
+//       let uriResponse;
+//       try {
+//         uriResponse = await fetch(uriURL, { method: "GET" });
+//       } catch (e) {
+//         console.error(e);
+//         setFetchError(createMainError(nftAddress));
+//         // setFetchError("Could not fetch NFT URI " + tokenURI);
+//         setIsLoading(false);
+//         return;
+//       }
+
+//       let uriInfo = await uriResponse.json();
+//       let imgURI = uriInfo.image;
+
+//       let [imageURIURL, protocol] = await getURLFromURI(imgURI);
+
+//       let isImageOnArweave = false;
+//       let isMetadataOnArweave = false;
+
+//       // if the protocol is on IPFS, we check if the tokenURI AND the imageURI are stored on Arweave via ipfs2arweave.com
+//       if (protocol === "ipfs") {
+//         let metadataCID = uriURL.replace(ipfsGetEndpoint, "");
+//         let rootMetadataCID = metadataCID.split("/");
+
+//         let imageCID = imageURIURL.replace(ipfsGetEndpoint, "");
+//         let rootImageCID = imageCID.split("/");
+
+//         try {
+//           // We check to see if the IPFS hash is stored on arweave
+//           let arweaveImageID = await getArweaveIDByCID(rootImageCID);
+//           if (arweaveImageID !== "") {
+//             //  we change the imageURIURL to the arweaveImageID
+//             imageURIURL = arweaveEndpoint + "/" + arweaveImageID;
+//             isImageOnArweave = true;
+//           }
+//           let arweaveMetadataID = await getArweaveIDByCID(rootMetadataCID);
+//           if (arweaveMetadataID !== "") {
+//             tokenURI = arweaveEndpoint + "/" + arweaveMetadataID;
+//             isMetadataOnArweave = true;
+//           }
+//         } catch (e) {
+//           console.log(e);
+//         }
+//       }
+
+//       setImageInfo({ ...imageInfo, loading: true });
+
+//       fetch(imageURIURL, { method: "GET" })
+//         .then(async (imageResponse) => {
+//           let imageBlob = await imageResponse.blob();
+//           let image = URL.createObjectURL(imageBlob);
+//           setImageInfo({
+//             imageURIURL: imageURIURL,
+//             image: image,
+//             loading: false,
+//           });
+//         })
+//         .catch((e) => {
+//           console.error(e);
+//           // setFetchError("Could not fetch NFT Image " + imgURI);
+//           setFetchError(createMainError(nftAddress));
+
+//           setIsLoading(false);
+//         });
+
+//       let severity = "undefined";
+//       switch (uriProtocol) {
+//         case "ipfs":
+//           severity = "medium";
+//           break;
+//         case "arweave":
+//           severity = "strong";
+//           break;
+//         case "centralized":
+//           severity = "poor";
+//           break;
+//         default:
+//           severity = "undefined";
+//       }
+
+//       if (knownGood.includes(nftAddress.toLowerCase())) {
+//         setNFTInfo({
+//           level: "strong",
+//           owner,
+//           tokenURI,
+//           symbol,
+//           name,
+//           address: nftAddress,
+//           tokenID: tokenID,
+//           protocol: "On-chain",
+//           uriURL,
+//         });
+//         setIsLoading(false);
+//         return;
+//       }
+//       if (protocol === "ipfs" && isImageOnArweave && isMetadataOnArweave) {
+//         setNFTInfo({
+//           level: "strong",
+//           owner,
+//           tokenURI,
+//           symbol,
+//           name,
+//           address: nftAddress,
+//           tokenID: tokenID,
+//           protocol: "Arweave & IPFS",
+//           uriURL,
+//         });
+
+//         setIsLoading(false);
+//         return;
+//       }
+
+//       setNFTInfo({
+//         level: severity,
+//         owner,
+//         tokenURI,
+//         symbol,
+//         name,
+//         address: nftAddress,
+//         tokenID: tokenID,
+//         protocol: uriProtocol,
+//         uriURL,
+//       });
+//       setIsLoading(false);
+//     } catch (e) {
+//       console.error(e);
+//       // setFetchError(e.message);
+//       setFetchError(createMainError(nftAddress));
+//       setIsLoading(false);
+//     }
+//   };

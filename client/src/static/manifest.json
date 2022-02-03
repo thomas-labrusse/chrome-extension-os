@@ -1,0 +1,29 @@
+{
+	"name": "GC traits",
+	"description": "Get ranks directly on page",
+	"version": "1.0.0",
+	"manifest_version": 3,
+	"permissions": ["storage", "activeTab", "scripting"],
+	"content_scripts": [
+		{
+			"matches": ["https://opensea.io/*"],
+			"js": ["contentScript.js"]
+		}
+	],
+	"action": {
+		"default_title": "Change current page color",
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "icon16.png",
+			"32": "icon32.png",
+			"48": "icon48.png",
+			"128": "icon128.png"
+		}
+	},
+	"icons": {
+		"16": "icon16.png",
+		"32": "icon32.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	}
+}
