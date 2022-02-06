@@ -2,6 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 
+import globalErrorHandler from './controllers/errorController.js'
+import AppError from './utils/appErrors.js'
+
 // Import Routers
 import collectionRouter from './routes/collectionRoutes.js'
 
@@ -21,11 +24,9 @@ app.use('/api/v1/collection', collectionRouter)
 
 // HANDLING UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
-	res.status(404).json({
-		status: 'fail',
-		message: `Can't find ${req.originalUrl} on this server`,
-	})
-	next()
+	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404))
 })
+
+app.use(globalErrorHandler)
 
 export default app

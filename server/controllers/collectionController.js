@@ -6,6 +6,7 @@ import { ethers } from 'ethers'
 import { contractAbi } from './../ERC721ABI.js'
 import Collection from './../models/collectionModel.js'
 import APIFeatures from './../utils/apiFeatures.js'
+import AppError from '../utils/appErrors.js'
 
 // Initializing Ether Provider (with Infura)
 const provider = new ethers.providers.JsonRpcProvider(
@@ -87,6 +88,12 @@ const getCollection = async (req, res) => {
 		const collection = await Collection.findOne({
 			contractAddress: req.params.contractAddress,
 		})
+
+		if (!collection) {
+			console.log('Running Global Error handling MW...')
+			return next(new AppError('No collection found with that ID', 404))
+		}
+
 		res.status(200).json({
 			status: 'success',
 			data: {
