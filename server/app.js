@@ -19,4 +19,13 @@ app.use(express.json())
 // ROUTES & HANDLERS
 app.use('/api/v1/collection', collectionRouter)
 
+// HANDLING UNHANDLED ROUTES
+app.all('*', (req, res, next) => {
+	res.status(404).json({
+		status: 'fail',
+		message: `Can't find ${req.originalUrl} on this server`,
+	})
+	next()
+})
+
 export default app
