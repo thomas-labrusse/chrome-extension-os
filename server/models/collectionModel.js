@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
+import slugify from 'slugify'
 
 // TODO: How to deal with sub collections (for tokens = schema inception ? mixed array ?)
 // const tokenSchema = new mongoose.Schema({
@@ -11,17 +12,17 @@ import mongoose from "mongoose";
 const collectionSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: [true, "A collection must have a name"],
+		required: [true, 'A collection must have a name'],
 		unique: true,
 	},
 	slug: {
 		type: String,
-		required: [true, "A collection must have a slug"],
+		// required: [true, 'A collection must have a slug'],
 		unique: true,
 	},
 	contractAddress: {
 		type: String,
-		required: [true, "A collection must have a contract address"],
+		required: [true, 'A collection must have a contract address'],
 		unique: true,
 	},
 	maxSupply: {
@@ -29,11 +30,17 @@ const collectionSchema = new mongoose.Schema({
 	},
 	baseURI: {
 		type: String,
-		required: [true, "A collection must have a baseURI"],
+		required: [true, 'A collection must have a baseURI'],
 	},
 	tokens: {},
-});
+})
 
-const Collection = mongoose.model("Collection", collectionSchema);
+// Automatic slug proprety on document creation with a document MW
+collectionSchema.pre('save', function (next) {
+	this.slug = slugify(this.name, { lower: true })
+	next()
+})
 
-export default Collection;
+const Collection = mongoose.model('Collection', collectionSchema)
+
+export default Collection

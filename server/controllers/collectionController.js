@@ -29,12 +29,15 @@ const createNewCollection = async (req, res) => {
 
 		// Getting collection basic info from Ethereum
 		const name = await contract.name()
-		const slug = name.toLowerCase().split(' ').join('-')
+		// TODO: remove slug
+		// const slug = name.toLowerCase().split(' ').join('-')
 		const totalSupply = await contract.totalSupply()
 		const maxSupply = totalSupply.toNumber()
 		const tokenURI = await contract.tokenURI('999')
 		const baseURI = tokenURI.split('999').join('')
-		const collection = { name, slug, contractAddress, maxSupply, baseURI }
+		// TODO: remove slug
+		const collection = { name, contractAddress, maxSupply, baseURI }
+		// const collection = { name, slug, contractAddress, maxSupply, baseURI }
 
 		// SAVING TO DB
 		const newCollection = await Collection.create(collection)
