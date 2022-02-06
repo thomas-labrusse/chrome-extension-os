@@ -83,14 +83,14 @@ const getAllCollections = async (req, res) => {
 }
 
 // GET ONE COLLECTION BY ITS NAME
-const getCollection = async (req, res) => {
+const getCollection = async (req, res, next) => {
 	try {
 		const collection = await Collection.findOne({
 			contractAddress: req.params.contractAddress,
 		})
 
 		if (!collection) {
-			console.log('Running Global Error handling MW...')
+			console.log('Sending Error To Global Error handling MW...')
 			return next(new AppError('No collection found with that ID', 404))
 		}
 
