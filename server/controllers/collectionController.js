@@ -108,6 +108,25 @@ export const getCollection = async (req, res, next) => {
 	}
 }
 
+// DELETE ONE COLLECTION
+export const deleteCollection = async (req, res) => {
+	try {
+		const collection = await Collection.findOneAndDelete({
+			contractAddress: req.params.contractAddress,
+		})
+
+		res.status(204).json({
+			status: 'success',
+			data: collection,
+		})
+	} catch (err) {
+		res.status(404).json({
+			status: 'fail',
+			message: err,
+		})
+	}
+}
+
 // GET ALL ITEMS IN COLLECTION
 export const updateCollectionItems = async (req, res) => {
 	try {
