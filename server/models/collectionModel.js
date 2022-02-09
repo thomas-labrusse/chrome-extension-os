@@ -1,14 +1,6 @@
 import mongoose from 'mongoose'
 import slugify from 'slugify'
 
-// TODO: How to deal with sub collections (for tokens = schema inception ? mixed array ?)
-// const tokenSchema = new mongoose.Schema({
-// 	id: {
-// 		type: Number,
-// 	},
-// 	data: [],
-// });
-
 const collectionSchema = new mongoose.Schema({
 	name: {
 		type: String,
