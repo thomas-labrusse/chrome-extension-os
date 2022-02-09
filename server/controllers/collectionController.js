@@ -23,7 +23,7 @@ console.log(provider)
 // const contractAddress = "0xAf615B61448691fC3E4c61AE4F015d6e77b6CCa8"; //Lives of Asuna
 
 // CREATE NEW COLLECTION IN DB (BASED ON CONTRACT ADDRESS)
-const createNewCollection = async (req, res) => {
+export const createNewCollection = async (req, res) => {
 	try {
 		const contractAddress = req.body.contractAddress
 		const contract = new ethers.Contract(contractAddress, contractAbi, provider)
@@ -61,7 +61,7 @@ const createNewCollection = async (req, res) => {
 }
 
 // GET ALL COLLECTIONS
-const getAllCollections = async (req, res) => {
+export const getAllCollections = async (req, res) => {
 	try {
 		console.log('reaches here')
 		let features = new APIFeatures(Collection.find(), req.query).sort().fields()
@@ -83,7 +83,7 @@ const getAllCollections = async (req, res) => {
 }
 
 // GET ONE COLLECTION BY ITS NAME
-const getCollection = async (req, res, next) => {
+export const getCollection = async (req, res, next) => {
 	try {
 		const collection = await Collection.findOne({
 			contractAddress: req.params.contractAddress,
@@ -109,7 +109,7 @@ const getCollection = async (req, res, next) => {
 }
 
 // GET ALL ITEMS IN COLLECTION
-const updateCollectionItems = async (req, res) => {
+export const updateCollectionItems = async (req, res) => {
 	try {
 		const collectionContractAddress = req.params.contractAddress
 		const collectionTBU = await Collection.findOne({
@@ -166,11 +166,4 @@ const updateCollectionItems = async (req, res) => {
 			message: err,
 		})
 	}
-}
-
-export {
-	createNewCollection,
-	getAllCollections,
-	getCollection,
-	updateCollectionItems,
 }
