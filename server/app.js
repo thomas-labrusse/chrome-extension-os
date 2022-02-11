@@ -7,6 +7,7 @@ import AppError from './utils/appErrors.js'
 
 // Import Routers
 import collectionRouter from './routes/collectionRoutes.js'
+import itemRouter from './routes/itemRoutes.js'
 
 const app = express()
 
@@ -17,10 +18,11 @@ const app = express()
 app.use(morgan('dev'))
 app.use(cors())
 // Adding body to req.body
-app.use(express.json())
+app.use(express.json({ limit: '10mb' }))
 
-// ROUTES & HANDLERS
-app.use('/api/v1/collection', collectionRouter)
+// MOUNTING ROUTES
+app.use('/api/v1/collections', collectionRouter)
+app.use('/api/v1/items', itemRouter)
 
 // HANDLING UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
