@@ -25,7 +25,7 @@ console.log(provider)
 // CREATE NEW COLLECTION IN DB (BASED ON CONTRACT ADDRESS)
 export const createNewCollection = async (req, res) => {
 	try {
-		const contractAddress = req.body.contractAddress
+		const contractAddress = req.body.contractAddress.toLowerCase()
 		const contract = new ethers.Contract(contractAddress, contractAbi, provider)
 
 		// Getting collection basic info from Ethereum
@@ -199,10 +199,11 @@ export const getCollectionId = async (req, res, next) => {
 			collectionId = await Collection.findOne({
 				contractAddress: req.params.contractAddress,
 			})
+			req.collectionId = collectionId._id.toString()
+			console.log('req.collectionId :', req.collectionId)
+			next()
 		} catch (err) {
 			console.log(err)
 		}
-	}
-	req.collectionId = collectionId
-	next()
+	} else next()
 }

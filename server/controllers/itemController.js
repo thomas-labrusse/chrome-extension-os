@@ -26,15 +26,18 @@ export const getItem = async (req, res, next) => {
 	try {
 		let item
 		let collectionId
+		console.log('req.params:', req.params)
 		if (req.collectionId) collectionId = req.collectionId
 		// ContractAddress params collected from nested route
 
+		console.log('collectionId:', collectionId)
 		if (req.params.itemNb) {
 			item = await Item.findOne({
 				nb: req.params.itemNb,
 				nftCollection: collectionId,
 			})
 		}
+		console.log('ITEM FOUND:', item)
 		res.status(200).json({
 			status: 'success',
 			data: {
