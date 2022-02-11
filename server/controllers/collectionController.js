@@ -82,7 +82,7 @@ export const getAllCollections = async (req, res) => {
 	}
 }
 
-// GET ONE COLLECTION BY ITS NAME
+// GET ONE COLLECTION BY ITS CONTRACT ADDRESS
 export const getCollection = async (req, res, next) => {
 	try {
 		const collection = await Collection.findOne({
@@ -108,7 +108,7 @@ export const getCollection = async (req, res, next) => {
 	}
 }
 
-// DELETE ONE COLLECTION
+// DELETE ONE COLLECTION BY CONTRACT ADDRESS
 export const deleteCollection = async (req, res) => {
 	try {
 		const collection = await Collection.findOneAndDelete({
@@ -127,7 +127,9 @@ export const deleteCollection = async (req, res) => {
 	}
 }
 
-// GET ALL ITEMS IN COLLECTION
+// GET ALL ITEMS IN COLLECTION (BY CONTRACT ADDRESS)
+
+// GET ALL ITEMS IN COLLECTION (BY CONTRACT ADDRESS)
 export const updateCollectionItems = async (req, res) => {
 	try {
 		const collectionContractAddress = req.params.contractAddress
@@ -164,18 +166,19 @@ export const updateCollectionItems = async (req, res) => {
 			stopOnError: false,
 		})
 
-		// Update DB
-		const collection = await Collection.findOneAndUpdate(
-			{ contractAddress: collectionContractAddress },
-			{
-				tokens: results,
-			}
-		)
+		// // Update DB
+		// const collection = await Collection.findOneAndUpdate(
+		// 	{ contractAddress: collectionContractAddress },
+		// 	{
+		// 		tokens: results,
+		// 	}
+		// )
 
 		res.status(200).json({
 			status: 'success',
 			data: {
-				collection,
+				// collection,
+				results,
 			},
 		})
 	} catch (err) {
@@ -185,4 +188,21 @@ export const updateCollectionItems = async (req, res) => {
 			message: err,
 		})
 	}
+}
+
+// MW : RETRIEVE THE COLLECTION ID FROM THE CONTRACT ADDRESS
+// TODO: Find a way to access the collection ID when requesting an item, without this MW
+export const getCollectionId = async (req, res, next) => {
+	let collectionId
+	if (req.params.contractAddress) {
+		try {
+			collectionId = await Collection.findOne({
+				contractAddress: req.params.contractAddress,
+			})
+		} catch (err) {
+			console.log(err)
+		}
+	}
+	req.collectionId = collectionId
+	next()
 }
