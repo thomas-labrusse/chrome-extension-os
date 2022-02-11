@@ -15,9 +15,10 @@ import itemRouter from './itemRoutes.js'
 const router = express.Router()
 
 // Mounting nested route for items
-router.use('/:collectionId/items', itemRouter)
+router.use('/:contractAddress/items', itemRouter)
 
 router.route('/').get(getAllCollections).post(createNewCollection)
+
 router
 	.route('/:contractAddress')
 	.get(getCollection)
