@@ -20,7 +20,7 @@ const generateHTML = (item) =>
 	// TODO: retreive ranking from API using the contract address
 	`
 <div class="ranking">
-	<p>#${item.name} ranking ${item.rarityRank}</p>
+	<p>${item.name} ranking ${item.rarityRank}</p>
 </div>
 `
 
@@ -56,13 +56,13 @@ let observer = new MutationObserver((mutations) => {
 			let item
 			try {
 				console.log('REACHES HERE FIRST')
-				res = await axios({
+				const res = await axios({
 					method: 'get',
 					url: `${url}/${contract}/items/${itemId}`,
 				})
 				console.log('REACHES HER SECOND')
 				console.log('RES FROM DB:', res)
-				item = res.data.item
+				item = res.data.data.item
 			} catch (err) {
 				console.log(err)
 				item = {
@@ -87,5 +87,3 @@ let observer = new MutationObserver((mutations) => {
 })
 
 observer.observe(targetNode, { childList: true })
-
-// TO DO
