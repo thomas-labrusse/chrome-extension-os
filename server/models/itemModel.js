@@ -30,12 +30,12 @@ const itemSchema = new mongoose.Schema(
 )
 
 // QUERY MW
-// itemSchema.pre(/^find/, function (next) {
-// 	this.populate({
-// 		path: 'nftCollection',
-// 	})
-// 	next()
-// })
+itemSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'nftCollection',
+	})
+	next()
+})
 
 const Item = mongoose.model('Item', itemSchema)
 
