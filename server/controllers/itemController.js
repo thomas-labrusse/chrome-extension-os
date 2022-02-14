@@ -1,5 +1,4 @@
 import Item from './../models/itemModel.js'
-import Collection from './../models/collectionModel.js'
 
 // GETTING ALL ITEMS
 export const getAllItems = async (req, res, next) => {
@@ -78,6 +77,28 @@ export const createItem = async (req, res, next) => {
 			data: {
 				item: newItem ? newItem : newItems,
 			},
+		})
+	} catch (err) {
+		console.log(err)
+		res.status(400).json({
+			status: 'fail',
+			message: err,
+		})
+	}
+}
+
+// DELETING ALL ITEMS FROM ONE COLLECTION
+export const deleteCollectionItems = async (req, res, next) => {
+	try {
+		let collectionId
+		if (req.collectionId) collectionId = req.collectionId
+		// ContractAddress params collected from nested route
+		console.log('req.params', req.params)
+		console.log('collectionId:', collectionId)
+		const nbItemDeleted = await Item.deleteMany({ nftCollection: collectionId })
+		res.status(200).json({
+			status: 'success',
+			nbItems: nbItemDeleted,
 		})
 	} catch (err) {
 		console.log(err)
