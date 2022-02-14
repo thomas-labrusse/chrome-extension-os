@@ -6,6 +6,7 @@
 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98 */
 
 /* ---02 COLORS 
+#fff9db
 #ffec99
 #ffe066
 #fab005
@@ -15,8 +16,13 @@
 #0c8599
 #1864ab
 #f8f9fa
+#868e96
+#495057
 #343a40
 #212529
+#0c3256
+#0a2844
+#071e33
 
 */
 
@@ -32,13 +38,13 @@ html {
 }
 
 body {
-	height: 400px;
-	width: 300px;
-	/* background-color: #ffe066; */
-	font-family: 'sans-serif';
-	line-height: 1;
+	height: 450px;
+	width: 350px;
+	background-color: #0a2844;
+	font-family: 'Verdana', sans-serif;
+	line-height: 1.5;
 	font-weight: 400;
-	color: #343a40;
+	color: #fff;
 }
 
 ul {
@@ -56,12 +62,12 @@ ul {
 }
 
 .heading-primary {
-	font-size: 2rem;
+	font-size: 1.8rem;
 	line-height: 1.05;
 }
 .heading-secondary {
 	margin-left: 0.5rem;
-	font-size: 1.8rem;
+	font-size: 1.5rem;
 }
 
 /* BUTTONS */
@@ -71,7 +77,8 @@ ul {
 	display: inline-block;
 	font-size: 1.2rem;
 	text-decoration: none;
-	background-color: #555;
+	background-color: #868e96;
+
 	color: #fff;
 	font-weight: 600;
 	padding: 0.5rem 1rem;
@@ -81,6 +88,11 @@ ul {
 	border: none;
 	cursor: pointer;
 	font-family: inherit;
+}
+
+.btn:hover,
+.btn:active {
+	background-color: #495057;
 }
 
 /* HELPER CLASSES / SETTINGS CLASSES */
@@ -107,7 +119,7 @@ ul {
 /* COLLECTION CONTAINER */
 
 .collections-container {
-	background-color: #ffec99;
+	background-color: #071e33;
 	margin: 1rem 0 2.5rem 0.5rem;
 	max-height: 250px;
 	overflow-y: scroll;
@@ -122,7 +134,7 @@ ul {
 	column-gap: 0.5rem;
 	grid-template-columns: repeat(3, 1fr);
 	font-size: 1.2rem;
-	padding: 0.5rem 0 0.5rem 0.5rem;
+	padding: 0.75rem 0 0.75rem 0.5rem;
 	align-items: center;
 	box-shadow: 0px 1px 2px 0px #fff;
 	/* border-top: solid 1px grey; */
@@ -134,12 +146,25 @@ ul li:last-child .card-container {
 
 .collection-name {
 	margin-left: 0.2rem;
+	font-weight: 500;
 }
 
 /* NEW COLLECTION FORM */
 .new-collection-container {
-	margin-bottom: 2rem;
+	margin: 0 0.5rem 2rem 0.5rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.new-collection-text {
+	font-size: 1.2rem;
+	margin-bottom: 0.5rem;
+}
+
+input {
+	background-color: #0a2844;
+	border: none;
+	border-bottom: 1px solid #fff;
+	margin-right: 0.5rem;
 }

@@ -98,14 +98,14 @@ const App = function () {
 		return (
 			<li>
 				<div className='card-container grid grid--3-cols'>
-					<p>{collection.name}</p>
-					<p>{collection.maxSupply}</p>
+					<p className='collection-name'>{collection.name}</p>
+					<p># {collection.maxSupply} items</p>
 					<p>
 						<button
 							className='btn'
 							onClick={() => getCollectionItems(collection.contractAddress)}
 						>
-							Get items
+							Get traits
 						</button>
 					</p>
 				</div>
@@ -152,15 +152,21 @@ const App = function () {
 				</ul>
 			</div>
 			<div className='container new-collection-container'>
-				<input
-					type='text'
-					value={newContract}
-					placeholder='0xed5af388653567af2f388e6224dc7c4b3241c544'
-					onChange={(event) => setNewContract(event.target.value)}
-				/>
-				<button className='btn' onClick={createNewCollection}>
-					Add Collection
-				</button>
+				<p className='new-collection-text'>
+					Can't find a collection ? Add it by pasting the contract address below
+					and clicking "Add"
+				</p>
+				<div>
+					<input
+						type='text'
+						value={newContract}
+						placeholder='0xed5af388653567af2f388e6224dc7c4b3241c544'
+						onChange={(event) => setNewContract(event.target.value)}
+					/>
+					<button className='btn' onClick={createNewCollection}>
+						Add
+					</button>
+				</div>
 			</div>
 		</>
 	)
