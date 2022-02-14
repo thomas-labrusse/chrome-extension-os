@@ -102,6 +102,7 @@ const App = function () {
 					<p>{collection.maxSupply}</p>
 					<p>
 						<button
+							className='btn'
 							onClick={() => getCollectionItems(collection.contractAddress)}
 						>
 							Get items
@@ -144,6 +145,12 @@ const App = function () {
 			<header className='header'>
 				<h1 className='heading-primary'>NFT Traits Extension</h1>
 			</header>
+			<h2 className='heading-secondary'>Collections</h2>
+			<div className='collections-container'>
+				<ul>
+					{collections.map((collection) => renderCollectionCard(collection))}
+				</ul>
+			</div>
 			<div className='container new-collection-container'>
 				<input
 					type='text'
@@ -152,14 +159,8 @@ const App = function () {
 					onChange={(event) => setNewContract(event.target.value)}
 				/>
 				<button className='btn' onClick={createNewCollection}>
-					Add Collection to DB
+					Add Collection
 				</button>
-			</div>
-			<div className='container'>
-				<h2 className='heading-secondary collections-header'>My Collections</h2>
-				<ul>
-					{collections.map((collection) => renderCollectionCard(collection))}
-				</ul>
 			</div>
 		</>
 	)

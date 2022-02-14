@@ -5,6 +5,21 @@
 - Font size system (px)
 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98 */
 
+/* ---02 COLORS 
+#ffec99
+#ffe066
+#fab005
+#f76707
+#fa5252
+#c92a2a
+#0c8599
+#1864ab
+#f8f9fa
+#343a40
+#212529
+
+*/
+
 * {
 	padding: 0;
 	margin: 0;
@@ -17,15 +32,13 @@ html {
 }
 
 body {
+	height: 400px;
+	width: 300px;
+	/* background-color: #ffe066; */
 	font-family: 'sans-serif';
 	line-height: 1;
 	font-weight: 400;
-	color: #555;
-}
-
-body {
-	height: 400px;
-	width: 400px;
+	color: #343a40;
 }
 
 ul {
@@ -33,19 +46,13 @@ ul {
 	padding: 0;
 }
 
-/* CONTAINER */
-.container {
-	max-width: 120rem;
-	padding: 0 2rem;
-	margin: 0 auto;
-}
-
 /* HEADERS */
 .heading-primary,
 .heading-secondary {
 	font-weight: 700;
-	color: #555;
+	/* color: #555; */
 	letter-spacing: 0.5px;
+	margin-bottom: 0.75rem;
 }
 
 .heading-primary {
@@ -53,17 +60,8 @@ ul {
 	line-height: 1.05;
 }
 .heading-secondary {
+	margin-left: 0.5rem;
 	font-size: 1.8rem;
-}
-/* GRIDS */
-.grid {
-	display: grid;
-	column-gap: 6.4rem;
-	row-gap: 9.6rem;
-}
-
-.grid--3-cols {
-	grid-template-columns: repeat(3, 1fr);
 }
 
 /* BUTTONS */
@@ -71,7 +69,7 @@ ul {
 .btn:link,
 .btn:visited {
 	display: inline-block;
-	font-size: 1.6rem;
+	font-size: 1.2rem;
 	text-decoration: none;
 	background-color: #555;
 	color: #fff;
@@ -103,22 +101,45 @@ ul {
 
 /* POPUP HEADER */
 .header {
-	margin: 1rem 1rem 2rem 1rem;
+	margin: 1rem 1rem 2.5rem 1rem;
 	text-align: center;
+}
+/* COLLECTION CONTAINER */
+
+.collections-container {
+	background-color: #ffec99;
+	margin: 1rem 0 2.5rem 0.5rem;
+	max-height: 250px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	/* border: solid 1px black; */
+	/* box-shadow: 0px 2px 2px 0px #fff; */
+}
+
+/* COLLECTION CARDS */
+.card-container {
+	display: grid;
+	column-gap: 0.5rem;
+	grid-template-columns: repeat(3, 1fr);
+	font-size: 1.2rem;
+	padding: 0.5rem 0 0.5rem 0.5rem;
+	align-items: center;
+	box-shadow: 0px 1px 2px 0px #fff;
+	/* border-top: solid 1px grey; */
+}
+
+ul li:last-child .card-container {
+	box-shadow: none;
+}
+
+.collection-name {
+	margin-left: 0.2rem;
 }
 
 /* NEW COLLECTION FORM */
 .new-collection-container {
 	margin-bottom: 2rem;
-}
-
-/* COLLECTIONS */
-.collections-header {
-	margin-bottom: 1rem;
-}
-
-/* COLLECTION CARDS */
-.card-container {
-	font-size: 1.2rem;
-	margin: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
