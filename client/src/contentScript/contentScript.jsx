@@ -17,7 +17,7 @@ new MutationObserver(() => {
 function onUrlChange() {
 	console.log('URL changed!', location.href)
 	if (location.href.includes('tab=activity')) {
-		script('div[role="list"]', 'activity')
+		script('div[role="list"][tabindex="0"]', 'activity')
 	}
 	if (location.href.includes('/collection/')) {
 		script('div[role="grid"]', 'items')
