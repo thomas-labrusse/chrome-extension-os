@@ -1,12 +1,10 @@
-// //////////////////////
-// SELECTORS
-
 import axios from 'axios'
 
 console.log('Content Script running')
 
 // LISTENING TO URL CHANGE WITH MUTATION OBSERVER
-// https://stackoverflow.com/questions/2844565/is-there-a-javascript-jquery-dom-change-listener/11546242#11546242
+//NOTE: https://stackoverflow.com/questions/2844565/is-there-a-javascript-jquery-dom-change-listener/11546242#11546242
+
 let lastUrl = location.href
 new MutationObserver(() => {
 	const url = location.href
@@ -20,19 +18,25 @@ function onUrlChange() {
 	console.log('URL changed!', location.href)
 	if (location.href.includes('tab=activity')) {
 		script('div[role="list"]', 'activity')
-	} else script('div[role="grid"]', 'items')
+	}
+	if (location.href.includes('/collection/')) {
+		script('div[role="grid"]', 'items')
+	}
 }
+
+// STARTING THE SCRIPT ON CONTENT SCRIPT LOAD
+// onUrlChange()
+
+// Business logic
 
 const script = function (selector, page) {
 	const url = 'http://localhost:3001/api/v1/collections'
 
-	// Title
+	// DOM MANIPULATION (TESTING EXTENSION ACTIVATION ON PAGE)
 	const title = document.querySelector('.gdbPwf')
 	console.log(title)
 
-	// NFT items container ".bwCDxg"
-	let assetsDivsArray = Array.from(document.querySelectorAll('.bwCDxg'))
-	console.log(assetsDivsArray)
+	title.style.color = 'red'
 
 	// ////////////////////////
 	// GENERATING HTML TO INJECT
@@ -90,7 +94,6 @@ const script = function (selector, page) {
 `
 	}
 
-	//
 	const injectHTML = function (target, content) {
 		// Injecting HTML
 		if (!target.lastChild.classList.contains('ranking'))
@@ -98,12 +101,7 @@ const script = function (selector, page) {
 	}
 
 	// ////////////////////////
-	// DOM MANIPULATION (TESTING EXTENSION ACTIVATION ON PAGE)
-
-	title.style.color = 'red'
-
-	// ////////////////////////
-	// LISTENING FOR DOM CHANGES
+	// LISTENING FOR DOM CHANGES TO INJECT HTML
 
 	// DOM node to be monitored
 	const targetNode = document.querySelector(selector)
@@ -147,3 +145,6 @@ const script = function (selector, page) {
 
 	observer.observe(targetNode, { childList: true })
 }
+
+// STARTING SCRIPT ON FIRST LOAD
+onUrlChange()
