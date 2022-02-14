@@ -235,16 +235,29 @@ export const calcRarityScore = function (collection, collectionAttributes) {
 			// let traitScore = collectionAttributes[collectionIndex][index].rarity;
 			itemScore += rarity
 		})
-		item.token.rarityScore = itemScore
+		item.token.rarityScore = itemScore.toFixed(2)
 	})
 
 	// Sorting collection by rarity and add rank to each collection item
+	let previousItemRarityScore
+	let previousItemRarityRank
 	const rankedCollection = collectionCopy
 		// Sorting collection by rarity and rank each item
 		.sort((a, b) => b.token.rarityScore - a.token.rarityScore)
 		.map((item, id) => {
-			item.token.rarityRank = id + 1
-			return { ...item }
+			if (
+				previousItemRarityScore &&
+				previousItemRarityScore === item.token.rarityScore
+			) {
+				item.token.rarityRank = previousItemRarityRank
+				return { ...item }
+			} else {
+				item.token.rarityRank = id + 1
+				// setting previous item for next comparison
+				previousItemRarityRank = item.token.rarityRank
+				previousItemRarityScore = item.token.rarityScore
+				return { ...item }
+			}
 		})
 	// Sorting collection by ID again
 	// .sort((a, b) => a.id - b.id);
