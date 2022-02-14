@@ -207,3 +207,28 @@ export const getCollectionId = async (req, res, next) => {
 		}
 	} else next()
 }
+
+export const updateCollection = async (req, res, next) => {
+	try {
+		const collection = await Collection.findOneAndUpdate(
+			{ contractAddress: req.params.contractAddress },
+			req.body,
+			{
+				new: true,
+				runValidators: true,
+			}
+		)
+		res.status(200).json({
+			status: 'success',
+			data: {
+				collection,
+			},
+		})
+	} catch (err) {
+		console.log(err)
+		res.status(200).json({
+			status: 'fail',
+			message: err,
+		})
+	}
+}

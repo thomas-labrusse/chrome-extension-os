@@ -6,6 +6,7 @@ import {
 	getCollection,
 	deleteCollection,
 	updateCollectionItems,
+	updateCollection,
 } from './../controllers/collectionController.js'
 
 // Importing nested routes
@@ -24,5 +25,7 @@ router
 	.get(getCollection)
 	.patch(updateCollectionItems)
 	.delete(deleteCollection)
+
+router.route('/update/:contractAddress').patch(updateCollection)
 
 export default router

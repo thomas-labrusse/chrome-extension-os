@@ -26,6 +26,7 @@ const collectionSchema = new mongoose.Schema(
 			required: [true, 'A collection must have a baseURI'],
 		},
 		tokens: {},
+		attributes: [],
 	},
 	{
 		toJSON: { virtuals: true },
