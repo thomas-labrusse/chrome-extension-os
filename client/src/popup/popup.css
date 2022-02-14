@@ -165,6 +165,7 @@ ul li:last-child .card-container {
 input {
 	background-color: #0a2844;
 	border: none;
+	color: #fff;
 	border-bottom: 1px solid #fff;
 	margin-right: 0.5rem;
 }
