@@ -40,6 +40,7 @@ const App = function () {
 				},
 			})
 			console.log('Response from the server', res)
+			getAllCollections()
 		} catch (err) {
 			console.log(err)
 		}
@@ -54,9 +55,9 @@ const App = function () {
 					fields: 'name,maxSupply,contractAddress',
 				},
 			})
-			const collections = res.data.data
-			console.log('Collections : ', collections)
-			return collections
+			const allCollections = res.data.data
+			setCollections(allCollections)
+			return allCollections
 		} catch (err) {
 			console.log(err)
 		}
@@ -116,10 +117,7 @@ const App = function () {
 	useEffect(() => {
 		console.log('Use effect running')
 		;(async function () {
-			const allCollections = await getAllCollections()
-			console.log('Updated collections:', allCollections)
-			setCollections(allCollections)
-			console.log(collections)
+			await getAllCollections()
 		})()
 	}, [])
 
