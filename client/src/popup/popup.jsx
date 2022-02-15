@@ -52,7 +52,7 @@ const App = function () {
 				method: 'get',
 				url: url,
 				params: {
-					fields: 'name,maxSupply,contractAddress',
+					fields: 'name,maxSupply,contractAddress,attributes',
 				},
 			})
 			const allCollections = res.data.data
@@ -95,20 +95,38 @@ const App = function () {
 		}
 	}
 
+	const updateCollectionAttributesDB = async (attributes, contract) => {
+		console.log('update collection route :', `${url}/update/${contract}`)
+		try {
+			const res = await axios({
+				method: 'patch',
+				url: `${url}/update/${contract}`,
+				data: { attributes: attributes },
+			})
+			console.log('Response from updateCollectionAttributesDB', res)
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
 	const renderCollectionCard = (collection) => {
 		return (
 			<li>
 				<div className='card-container grid grid--3-cols'>
 					<p className='collection-name'>{collection.name}</p>
 					<p># {collection.maxSupply} items</p>
-					<p>
-						<button
-							className='btn'
-							onClick={() => getCollectionItems(collection.contractAddress)}
-						>
-							Get traits
-						</button>
-					</p>
+					{collection.attributes.length > 1 ? (
+						<p className='card-last-item'>Rarity</p>
+					) : (
+						<p className='card-last-item'>
+							<button
+								className='btn'
+								onClick={() => getCollectionItems(collection.contractAddress)}
+							>
+								Get rarity
+							</button>
+						</p>
+					)}
 				</div>
 			</li>
 		)
@@ -123,19 +141,33 @@ const App = function () {
 
 	useEffect(() => {
 		console.log('Current collection Items in State:', currCollItems)
+
 		// Getting all collection attributes in an Array:
 		const currCollAttributes = getCollectionAttributes(currCollItems)
-		// TODO: save Attributes to state
+
+		// TODO: save Attributes to DB
 		console.log('currCollAttributes:', currCollAttributes)
+		updateCollectionAttributesDB(currCollAttributes, currContract)
+
+		// Updating all items with attributes
 		const updatedCollItems = updateCollectionItems(
 			currCollItems,
 			currCollAttributes
 		)
-		// TODO: update Collection Items to state
 		console.log('updatedCollectionItems', updatedCollItems)
+
+		// Ranking all items in the collection
 		const rankedColl = calcRarityScore(updatedCollItems, currCollAttributes)
 		console.log(rankedColl)
+
+		// Saving all ranked items in the DB
 		saveCollItemsDB(rankedColl, currContract)
+		// (
+		// 	// Refreshing all collection to change buttons
+		// 	async function () {
+		// 		await getAllCollections()
+		// 	}
+		// )()
 	}, [currCollItems])
 
 	return (

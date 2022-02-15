@@ -38,8 +38,8 @@ html {
 }
 
 body {
-	height: 450px;
-	width: 350px;
+	height: 500px;
+	width: 400px;
 	background-color: #0a2844;
 	font-family: 'Verdana', sans-serif;
 	line-height: 1.5;
@@ -138,6 +138,10 @@ ul {
 	align-items: center;
 	box-shadow: 0px 1px 2px 0px #fff;
 	/* border-top: solid 1px grey; */
+}
+
+.card-last-item {
+	justify-self: center;
 }
 
 ul li:last-child .card-container {
