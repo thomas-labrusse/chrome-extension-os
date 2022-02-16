@@ -10,6 +10,9 @@ import {
 	updateCollectionItems,
 } from './../utils/rarityUtils.js'
 
+// Import icons
+import checkLogo from './../static/checkmark-circle-outline.svg'
+
 // CONTRACTS EXAMPLES
 // const contractAddress = "0xE3234e57ac38890a9136247EAdFE1860316Ff6ab"; //Mood Rollers
 // const contractAddress = "0x2931b181ae9dc8f8109ec41c42480933f411ef94"; //Slimhoods
@@ -112,18 +115,42 @@ const App = function () {
 	const renderCollectionCard = (collection) => {
 		return (
 			<li>
-				<div className='card-container grid grid--3-cols'>
+				<div className='card-container'>
 					<p className='collection-name'>{collection.name}</p>
-					<p># {collection.maxSupply} items</p>
+					<p>{collection.maxSupply}</p>
 					{collection.attributes.length > 1 ? (
-						<p className='card-last-item'>Rarity</p>
+						<div className='card-last-item'>
+							<span>Available </span>
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								className='ionicon check-icon'
+								viewBox='0 0 512 512'
+							>
+								<title>Checkmark Circle</title>
+								<path
+									d='M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z'
+									fill='none'
+									stroke='currentColor'
+									stroke-miterlimit='10'
+									stroke-width='32'
+								/>
+								<path
+									fill='none'
+									stroke='currentColor'
+									stroke-linecap='round'
+									stroke-linejoin='round'
+									stroke-width='32'
+									d='M352 176L217.6 336 160 272'
+								/>
+							</svg>
+						</div>
 					) : (
 						<p className='card-last-item'>
 							<button
 								className='btn'
 								onClick={() => getCollectionItems(collection.contractAddress)}
 							>
-								Get rarity
+								Get Rarity
 							</button>
 						</p>
 					)}
@@ -162,12 +189,8 @@ const App = function () {
 
 		// Saving all ranked items in the DB
 		saveCollItemsDB(rankedColl, currContract)
-		// (
-		// 	// Refreshing all collection to change buttons
-		// 	async function () {
-		// 		await getAllCollections()
-		// 	}
-		// )()
+		// Refreshing all collection to update buttons
+		getAllCollections()
 	}, [currCollItems])
 
 	return (
@@ -176,6 +199,17 @@ const App = function () {
 				<h1 className='heading-primary'>NFT Traits Extension</h1>
 			</header>
 			<h2 className='heading-secondary'>Collections</h2>
+			<div className='collections-container-header'>
+				<ul>
+					<li>
+						<div className='card-container card-container-header'>
+							<p>Name</p>
+							<p># items</p>
+							<p className='card-last-item'>Rarity </p>
+						</div>
+					</li>
+				</ul>
+			</div>
 			<div className='collections-container'>
 				<ul>
 					{collections.map((collection) => renderCollectionCard(collection))}
