@@ -23,22 +23,27 @@ console.log(provider)
 // const contractAddress = "0xAf615B61448691fC3E4c61AE4F015d6e77b6CCa8"; //Lives of Asuna
 
 // CREATE NEW COLLECTION IN DB (BASED ON CONTRACT ADDRESS)
-export const createNewCollection = async (req, res) => {
+export const createNewCollection = async (req, res, next) => {
 	try {
 		const contractAddress = req.body.contractAddress.toLowerCase()
+		console.log('contractAddress', contractAddress)
+		console.log('contract length', contractAddress.length)
+
+		if (contractAddress.length !== 42) {
+			return next(
+				new AppError('A contract address must have 42 characters', 404)
+			)
+		}
 		const contract = new ethers.Contract(contractAddress, contractAbi, provider)
 
 		// Getting collection basic info from Ethereum
 		const name = await contract.name()
-		// TODO: remove slug
-		// const slug = name.toLowerCase().split(' ').join('-')
 		const totalSupply = await contract.totalSupply()
 		const maxSupply = totalSupply.toNumber()
 		const tokenURI = await contract.tokenURI('999')
 		const baseURI = tokenURI.split('999').join('')
 		// TODO: remove slug
 		const collection = { name, contractAddress, maxSupply, baseURI }
-		// const collection = { name, slug, contractAddress, maxSupply, baseURI }
 
 		// SAVING TO DB
 		const newCollection = await Collection.create(collection)
@@ -55,7 +60,8 @@ export const createNewCollection = async (req, res) => {
 		console.log(err)
 		res.status(400).json({
 			status: 'fail',
-			message: err,
+			message:
+				'Sorry, the collection could not be created, check your contract address or try again later',
 		})
 	}
 }
