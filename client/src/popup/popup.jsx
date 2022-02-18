@@ -10,9 +10,6 @@ import {
 	updateCollectionItems,
 } from './../utils/rarityUtils.js'
 
-// Import icons
-import checkLogo from './../static/checkmark-circle-outline.svg'
-
 // CONTRACTS EXAMPLES
 // const contractAddress = "0xE3234e57ac38890a9136247EAdFE1860316Ff6ab"; //Mood Rollers
 // const contractAddress = "0x2931b181ae9dc8f8109ec41c42480933f411ef94"; //Slimhoods
@@ -28,6 +25,7 @@ const App = function () {
 	const [newContract, setNewContract] = useState('')
 	const [currContract, setCurrContract] = useState('')
 	const [currCollItems, setCurrCollItems] = useState([])
+	const [spinner, setSpinner] = useState(false)
 
 	const createNewCollection = async function () {
 		if (newContract === '') return
@@ -45,7 +43,8 @@ const App = function () {
 			console.log('Response from the server', res)
 			getAllCollections()
 		} catch (err) {
-			console.log(err)
+			console.log(err.response)
+			alert(err.response.data.message)
 		}
 	}
 
@@ -67,8 +66,12 @@ const App = function () {
 	}
 
 	const getCollectionItems = async (contract) => {
+		// TODO: start spinner
+		setSpinner(true)
+
 		try {
 			console.log('Trying to update collection item of contract :', contract)
+
 			const res = await axios({
 				method: 'patch',
 				url: `${url}/${contract}`,
@@ -79,8 +82,10 @@ const App = function () {
 			setCurrContract(contract)
 			setCurrCollItems(resultsArray)
 
-			// createCollectionItems(resultsArray, contract)
+			createCollectionItems(resultsArray, contract)
 		} catch (err) {
+			// stop spinner if error
+			setSpinner(false)
 			console.log(err)
 		}
 	}
@@ -112,9 +117,9 @@ const App = function () {
 		}
 	}
 
-	const renderCollectionCard = (collection) => {
+	const renderCollectionCard = (collection, id) => {
 		return (
-			<li>
+			<li key={id}>
 				<div className='card-container'>
 					<p className='collection-name'>{collection.name}</p>
 					<p>{collection.maxSupply}</p>
@@ -131,15 +136,15 @@ const App = function () {
 									d='M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z'
 									fill='none'
 									stroke='currentColor'
-									stroke-miterlimit='10'
-									stroke-width='32'
+									strokeMiterlimit='10'
+									strokeWidth='32'
 								/>
 								<path
 									fill='none'
 									stroke='currentColor'
-									stroke-linecap='round'
-									stroke-linejoin='round'
-									stroke-width='32'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									strokeWidth='32'
 									d='M352 176L217.6 336 160 272'
 								/>
 							</svg>
@@ -172,7 +177,7 @@ const App = function () {
 		// Getting all collection attributes in an Array:
 		const currCollAttributes = getCollectionAttributes(currCollItems)
 
-		// TODO: save Attributes to DB
+		// Saving attributes to DB
 		console.log('currCollAttributes:', currCollAttributes)
 		updateCollectionAttributesDB(currCollAttributes, currContract)
 
@@ -189,6 +194,10 @@ const App = function () {
 
 		// Saving all ranked items in the DB
 		saveCollItemsDB(rankedColl, currContract)
+
+		// Stoping the spinner
+		setSpinner(false)
+
 		// Refreshing all collection to update buttons
 		getAllCollections()
 	}, [currCollItems])
@@ -198,39 +207,63 @@ const App = function () {
 			<header className='header'>
 				<h1 className='heading-primary'>NFT Traits Extension</h1>
 			</header>
-			<h2 className='heading-secondary'>Collections</h2>
-			<div className='collections-container-header'>
-				<ul>
-					<li>
-						<div className='card-container card-container-header'>
-							<p>Name</p>
-							<p># items</p>
-							<p className='card-last-item'>Rarity </p>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div className='collections-container'>
-				<ul>
-					{collections.map((collection) => renderCollectionCard(collection))}
-				</ul>
-			</div>
-			<div className='container new-collection-container'>
-				<p className='new-collection-text'>
-					Can't find a collection ? Add it by pasting the contract address below
-					and clicking "Add"
-				</p>
-				<div>
-					<input
-						type='text'
-						value={newContract}
-						placeholder='0xed5af388653567af2f388e6224dc7c4b3241c544'
-						onChange={(event) => setNewContract(event.target.value)}
-					/>
-					<button className='btn' onClick={createNewCollection}>
-						Add
-					</button>
+			{spinner ? (
+				<div className='spinner-global-container'>
+					<p className='spinner-text'>
+						Retrieving all collection items, this can take a few minutes
+					</p>
+					<div className='spinner-container'>
+						<div className='dot-flashing'></div>
+					</div>
 				</div>
+			) : (
+				<div>
+					<h2 className='heading-secondary'>Collections</h2>
+					<div className='collections-container-header'>
+						<ul>
+							<li>
+								<div className='card-container card-container-header'>
+									<p>Name</p>
+									<p># items</p>
+									<p className='card-last-item'>Rarity </p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div className='collections-container'>
+						<ul>
+							{collections.map((collection, id) =>
+								renderCollectionCard(collection, id)
+							)}
+						</ul>
+					</div>
+					<div className='container new-collection-container'>
+						<p className='new-collection-text'>
+							Can't find a collection ? Add it by pasting the contract address
+							below and clicking "Add"
+						</p>
+						<div>
+							<input
+								type='text'
+								value={newContract}
+								placeholder='0xed5af388653567af2f388e6224dc7c4b3241c544'
+								onChange={(event) => setNewContract(event.target.value)}
+							/>
+							<button className='btn' onClick={createNewCollection}>
+								Add
+							</button>
+						</div>
+					</div>
+					{/* SPINNER */}
+					{/* <div>
+					<p>{spinner ? 'spinning' : 'not spinning'}</p>
+				</div> */}
+				</div>
+			)}
+			<div className='footer'>
+				<p className='footer-text'>
+					By Thomas Labrusse, copyright 2022 - for personnal use only
+				</p>
 			</div>
 		</>
 	)

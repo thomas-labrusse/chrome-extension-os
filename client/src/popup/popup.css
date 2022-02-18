@@ -38,8 +38,8 @@ html {
 }
 
 body {
-	height: 500px;
 	width: 400px;
+	height: auto;
 	background-color: #0a2844;
 	font-family: 'Verdana', sans-serif;
 	line-height: 1.5;
@@ -194,4 +194,92 @@ input {
 	color: #fff;
 	border-bottom: 1px solid #fff;
 	margin-right: 0.5rem;
+}
+
+.footer {
+	display: flex;
+	justify-content: center;
+}
+
+.footer-text {
+	font-style: italic;
+	font-size: 0.85rem;
+}
+
+/* SPINNER */
+
+.spinner-global-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 300px;
+}
+
+.spinner-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.spinner-text {
+	font-size: 1.2rem;
+	margin-bottom: 4rem;
+}
+
+/**
+ * ==============================================
+ * Dot Flashing
+ * ==============================================
+ */
+.dot-flashing {
+	position: relative;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #fff;
+	animation: dotFlashing 1s infinite linear alternate;
+	animation-delay: 0.5s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+	content: '';
+	display: inline-block;
+	position: absolute;
+	top: 0;
+}
+
+.dot-flashing::before {
+	left: -15px;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #fff;
+	animation: dotFlashing 1s infinite alternate;
+	animation-delay: 0s;
+}
+
+.dot-flashing::after {
+	left: 15px;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	background-color: #fff;
+	color: #fff;
+	animation: dotFlashing 1s infinite alternate;
+	animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+	0% {
+		background-color: #fff;
+	}
+	50%,
+	100% {
+		background-color: #071e33;
+	}
 }
