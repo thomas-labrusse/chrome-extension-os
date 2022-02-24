@@ -17,6 +17,8 @@ import {
 // const contractAddress = "0xed5af388653567af2f388e6224dc7c4b3241c544"; //Azuki
 // const contractAddress = "0x4Db1f25D3d98600140dfc18dEb7515Be5Bd293Af"; //Hape Prime
 // const contractAddress = "0xAf615B61448691fC3E4c61AE4F015d6e77b6CCa8"; //Lives of Asuna
+// "0xFeb56AAF59F8c17300F4D8306365a491b05B6602" ; The Beeings
+// "0x59468516a8259058baD1cA5F8f4BFF190d30E066" ; Invisible Friends
 
 const url = 'http://localhost:3001/api/v1/collections'
 
@@ -205,7 +207,7 @@ const App = function () {
 	return (
 		<>
 			<header className='header'>
-				<h1 className='heading-primary'>NFT Traits Extension</h1>
+				<h1 className='heading-primary'>NFT rarity</h1>
 			</header>
 			{spinner ? (
 				<div className='spinner-global-container'>
@@ -239,8 +241,8 @@ const App = function () {
 					</div>
 					<div className='container new-collection-container'>
 						<p className='new-collection-text'>
-							Can't find a collection ? Add it by pasting the contract address
-							below and clicking "Add"
+							Can't find the collection you're looking for ? Add it by pasting
+							the contract address below and clicking "Add"
 						</p>
 						<div>
 							<input

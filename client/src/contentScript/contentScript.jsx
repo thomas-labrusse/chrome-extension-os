@@ -17,10 +17,16 @@ new MutationObserver(() => {
 function onUrlChange() {
 	console.log('URL changed!', location.href)
 	if (location.href.includes('tab=activity')) {
+		console.log('Activity script running')
 		script('div[role="list"][tabindex="0"]', 'activity')
 	}
 	if (location.href.includes('/collection/')) {
+		console.log('Collection script running')
 		script('div[role="grid"]', 'items')
+	}
+	if (location.href.includes('/account')) {
+		console.log('Account script running')
+		script('div[role="grid"]', 'account')
 	}
 }
 
@@ -36,7 +42,9 @@ const script = function (selector, page) {
 	const title = document.querySelector('.gdbPwf')
 	console.log(title)
 
-	title.style.color = 'red'
+	if (title) {
+		title.style.color = 'red'
+	}
 
 	// ////////////////////////
 	// GENERATING HTML TO INJECT
@@ -58,7 +66,7 @@ const script = function (selector, page) {
 			backgroundColor = '#0c8599'
 		} else backgroundColor = '#1864ab'
 
-		if (page === 'items')
+		if (page === 'items' || page === 'account')
 			return `
 <div class="ranking" style="display:flex; justify-content: space-around; align-items:center; background-color:${backgroundColor}; border-radius: 0 0 10px 10px">
 	<div>
